@@ -1,0 +1,455 @@
+@import url('https://fonts.googleapis.com/css2?family=Boldonse&display=swap');
+
+:root {
+	--header-offset: 120px; /* hauteur à laisser sous le header fixe ; ajuste si ton header change */
+}
+
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: auto;
+}
+
+a {
+    cursor: auto !important;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    background: #FDF5E6;
+    font-family: 'Boldonse', serif;
+}
+
+body {
+    font-family: 'Boldonse', serif;
+    background: #FDF5E6;
+}
+
+.hero {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    pointer-events: none;
+    background: transparent;
+}
+
+/* Header default for main page: opaque, no blur so content never passes under it */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* --- Project pages: translucent header + smooth dissolve for content passing underneath --- */
+.project-page .header {
+	background: rgba(253,245,230,0.5); /* semi-transparent header color */
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	border-bottom: none; /* hide hard border */
+	position: fixed; /* ensure pseudo-element positions correctly */
+}
+
+/* pseudo element to create a soft, diluted bottom edge so content fades out beneath header
+   gradient goes from transparent → fully opaque header color so content is fully hidden */
+.project-page .header::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: calc(var(--header-offset) * 0.9); /* increase to control fade zone */
+	pointer-events: none;
+	background: linear-gradient(
+		to bottom,
+		rgba(253,245,230,0) 0%,
+		rgba(253,245,230,0.25) 30%,
+		rgba(253,245,230,0.6) 60%,
+		rgba(253,245,230,1) 100%
+	);
+	/* blur the gradient so there is no hard seam */
+	filter: blur(10px);
+	-webkit-filter: blur(10px);
+	/* slightly extend down to ensure full coverage and smooth transition */
+	transform: translateY(6px);
+}
+
+/* ensure header stacking & positioning stays correct on project pages */
+.project-page .header,
+.project-page .header * {
+	pointer-events: auto;
+	z-index: 1000;
+}
+
+/* keep project-page-main spacing so content isn't hidden immediately at load,
+   but when it scrolls under the header it will fade/blend smoothly */
+.project-page .project-page-main {
+	padding-top: var(--header-offset);
+}
+
+/* s'assurer que chaque élément à l'intérieur du header peut recevoir des événements */
+.header, .header * {
+    pointer-events: auto;
+}
+
+.header-text {
+    color: #333;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    transform-origin: top left;
+    transition: transform 0.1s ease;
+    font-family: 'Boldonse', serif;
+}
+
+.header-text-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.header-text-link:hover {
+    opacity: 0.6;
+}
+
+.header-text p {
+    margin: 0;
+    font-weight: 300;
+}
+
+.header-menu {
+    display: flex;
+    gap: 2rem;
+    transform-origin: top right;
+    transition: transform 0.1s ease;
+}
+
+.header-menu a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 300;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+    font-family: 'Boldonse', serif;
+}
+
+.header-menu a:hover {
+    opacity: 0.6;
+}
+
+.background-text {
+    position: absolute;
+    top: 53%;
+    left: 51%;
+    transform: translate(-50%, -50%) scaleX(0.55) scaleY(1.5);
+    font-size: 18vw;
+    font-weight: 100;
+    color: rgba(58, 2, 2, 0.08);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+    margin: 0;
+    white-space: nowrap;
+    font-family: 'Boldonse', serif;
+}
+
+
+
+canvas {
+    display: block !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.25));
+    pointer-events: none; /* <-- Permet aux liens sous le canvas d'être cliqués */
+}
+
+
+.content {
+    position: relative;
+    z-index: 30; /* <-- Met le contenu au-dessus du canvas si besoin */
+    pointer-events: auto;
+    margin-top: 100vh;
+}
+
+.spacer {
+    height: 100vh;
+}
+
+.content-section {
+    min-height: 100vh;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    pointer-events: all;
+    scroll-margin-top: calc(var(--header-offset) + 12px);
+}
+
+
+.content-section h2 {
+    font-size: 3rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    color: #333;
+    font-family: 'Boldonse', serif;
+}
+
+.content-section p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 800px;
+    text-align: center;
+    line-height: 2.5;
+    font-family: 'Boldonse', serif;
+}
+
+.contact-link {
+    text-decoration: none;
+    color: #333;
+    font-family: 'Boldonse', serif;
+    font-size: 1.2rem;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    pointer-events: auto;
+    z-index: 30;
+    position: relative;
+}
+
+.contact-link:hover {
+    opacity: 0.6;
+}
+
+/* petit espacement pour le lien CV */
+.cv-link {
+    margin-top: 0.5rem;
+}
+
+/* Gallery styles */
+.gallery {
+    width: 100%;
+    max-width: 1100px;
+    margin: 2rem auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    align-items: stretch;
+}
+
+.gallery-item {
+    background: transparent;
+    overflow: visible;     /* allow image to show full shape outside the box */
+    border-radius: 0;      /* remove rounded box clipping */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Cacher les légendes sous les vignettes (accessibilité préservée) */
+.gallery-item figcaption {
+    display: none;
+}
+
+/* SVG as image container: use 'auto' height so image is not cropped.
+   Change --img-max-height per vignette to adjust size without moving position. */
+.gallery-item svg {
+	width: 100%;
+	height: auto;
+	max-height: var(--img-max-height, 320px);    /* ← now uses per-item CSS variable */
+	display: block;
+}
+
+/* target the SVG image element: only painted pixels will receive pointer events in SVG */
+.gallery-item svg image {
+	pointer-events: visiblePainted;
+	transition: transform 0.35s ease; /* removed filter from transition */
+	transform-origin: center center;
+	display: block;
+}
+
+/* hover only scales the image now — shadow removed */
+.gallery-item svg image:hover,
+.gallery-item svg a:hover image {
+	transform: scale(1.06);
+	cursor: pointer;
+}
+
+/* ensure the SVG internal anchor shows pointer when hovering painted pixels */
+.gallery-item svg a {
+    cursor: pointer;
+}
+
+/* remove rectangular lift/box-shadow on the container to avoid square hover visuals */
+.gallery-item {
+    transform: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+/* remove any .gallery-link rules (no external <a> wrapping) */
+/* responsive tweaks (keep existing breakpoints) */
+@media (max-width: 900px) {
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .gallery-item svg {
+        height: 180px;
+    }
+}
+@media (max-width: 520px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Project overlay (dynamic page) */
+.project-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,10,0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 2rem;
+}
+.project-card {
+    background: #fff;
+    max-width: 1000px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+}
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Page projet — conteneur central, laisse de l'espace sous le header fixe */
+.project-page-main {
+    padding-top: var(--header-offset);
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-bottom: 4rem;
+}
+
+/* Titre de projet : éviter qu'il soit masqué par le header lors du scroll */
+.project-page-title {
+    scroll-margin-top: calc(var(--header-offset) + 16px);
+    margin: 0 0 1rem 0;
+    font-size: 2rem;
+    color: #222;
+}
+
+/* Bouton de retour */
+.back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    color: #333;
+    background: rgba(0,0,0,0.03);
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    transition: opacity 0.15s ease, transform 0.12s ease;
+}
+.back-link:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+}
+
+.project-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.project-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+.project-body p {
+    color: #444;
+    text-align: center;
+}
+
+/* Position et animation du PNG cliquable sur la page d'accueil */
+.hero-side-project {
+    position: absolute;
+    right: 4rem;
+    top: 50%;
+    transform: translate(-140%,40%);
+    width: 180px;
+    height: 180px;
+    margin: 0;
+    padding: 0;
+    z-index: 15;
+}
+
+.hero-side-project svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.hero-side-project svg image {
+    pointer-events: visiblePainted;
+    transition: transform 0.35s ease;
+    transform-origin: center center;
+    display: block;
+}
+
+.hero-side-project svg image:hover,
+.hero-side-project svg a:hover image {
+    transform: scale(1.08);
+    cursor: pointer;
+}
+
+.hero-side-project svg a {
+    cursor: pointer;
+}
+
+/* Responsive: 2 columns on narrow screens -> stack */
+@media (max-width: 900px) {
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .gallery-item img {
+        height: 180px;
+    }
+}
+@media (max-width: 520px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+}
