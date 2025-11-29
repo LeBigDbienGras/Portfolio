@@ -79,17 +79,16 @@ function init() {
     plane.receiveShadow = true;
     scene.add(plane);
 
-    // ----- CHARGEMENT DU MODELE OBJ -----
     const objLoader = new THREE.OBJLoader();
     
     objLoader.load(
-        'Darius typo3D.obj', // Ton fichier OBJ
+        'Darius typo3D.obj',
         function (object) {
-            // Appliquer un matériau au modèle
+
             object.traverse(function (child) {
                 if (child.isMesh) {
                     child.material = new THREE.MeshStandardMaterial({
-                        color: 0x888888, // Gris mercure
+                        color: 0x888888,
                         metalness: 1.0,
                         roughness: 0.1
                     });
@@ -128,7 +127,7 @@ function init() {
     animate();
 }
 
-// Gérer le mouvement de la souris
+// mouvement de la souris
 function onMouseMove(event) {
     mouseX = (event.clientX - windowHalfX);
     mouseY = (event.clientY - windowHalfY);
@@ -155,7 +154,7 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-// Gestion du scroll pour déplacer le modèle 3D et diminuer l'opacité du texte
+// Gestion du scroll
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const maxScroll = window.innerHeight;
@@ -164,7 +163,7 @@ window.addEventListener('scroll', () => {
         logoMesh.position.y = scrollY * 0.005;
     }
     
-    // Faire monter le PNG "aslo a project" avec le modèle 3D
+
     const asloProject = document.getElementById('aslo-project');
     if (asloProject) {
         asloProject.style.transform = `translateY(calc(-50% + ${scrollY * 0.005}px))`;
@@ -175,7 +174,7 @@ window.addEventListener('scroll', () => {
         backgroundText.style.opacity = opacity;
     }
     
-    // Diminuer l'opacité et la taille du header sans le déplacer
+
     const header = document.querySelector('.header');
     const headerText = document.querySelector('.header-text');
     const headerMenu = document.querySelector('.header-menu');

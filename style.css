@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Boldonse&display=swap');
 
 :root {
-	--header-offset: 120px; /* hauteur à laisser sous le header fixe ; ajuste si ton header change */
+	--header-offset: 120px;
 }
 
-/* Global styles */
+
 * {
     margin: 0;
     padding: 0;
@@ -43,7 +43,7 @@ body {
     background: transparent;
 }
 
-/* Header default for main page: opaque, no blur so content never passes under it */
+
 .header {
     position: fixed;
     top: 0;
@@ -55,24 +55,23 @@ body {
     align-items: flex-start;
 }
 
-/* --- Project pages: translucent header + smooth dissolve for content passing underneath --- */
+
 .project-page .header {
-	background: rgba(253,245,230,0.5); /* semi-transparent header color */
+	background: rgba(253,245,230,0.5);
 	backdrop-filter: blur(6px);
 	-webkit-backdrop-filter: blur(6px);
-	border-bottom: none; /* hide hard border */
-	position: fixed; /* ensure pseudo-element positions correctly */
+	border-bottom: none;
+	position: fixed;
 }
 
-/* pseudo element to create a soft, diluted bottom edge so content fades out beneath header
-   gradient goes from transparent → fully opaque header color so content is fully hidden */
+
 .project-page .header::after {
 	content: "";
 	position: absolute;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	height: calc(var(--header-offset) * 0.9); /* increase to control fade zone */
+	height: calc(var(--header-offset) * 0.9);
 	pointer-events: none;
 	background: linear-gradient(
 		to bottom,
@@ -81,27 +80,26 @@ body {
 		rgba(253,245,230,0.6) 60%,
 		rgba(253,245,230,1) 100%
 	);
-	/* blur the gradient so there is no hard seam */
+
 	filter: blur(10px);
 	-webkit-filter: blur(10px);
-	/* slightly extend down to ensure full coverage and smooth transition */
+
 	transform: translateY(6px);
 }
 
-/* ensure header stacking & positioning stays correct on project pages */
+
 .project-page .header,
 .project-page .header * {
 	pointer-events: auto;
 	z-index: 1000;
 }
 
-/* keep project-page-main spacing so content isn't hidden immediately at load,
-   but when it scrolls under the header it will fade/blend smoothly */
+
 .project-page .project-page-main {
 	padding-top: var(--header-offset);
 }
 
-/* s'assurer que chaque élément à l'intérieur du header peut recevoir des événements */
+
 .header, .header * {
     pointer-events: auto;
 }
@@ -176,13 +174,13 @@ canvas {
     width: 100vw !important;
     height: 100vh !important;
     filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.25));
-    pointer-events: none; /* <-- Permet aux liens sous le canvas d'être cliqués */
+    pointer-events: none;
 }
 
 
 .content {
     position: relative;
-    z-index: 30; /* <-- Met le contenu au-dessus du canvas si besoin */
+    z-index: 30;
     pointer-events: auto;
     margin-top: 100vh;
 }
@@ -238,12 +236,12 @@ canvas {
     opacity: 0.6;
 }
 
-/* petit espacement pour le lien CV */
+
 .cv-link {
     margin-top: 0.5rem;
 }
 
-/* Gallery styles */
+
 .gallery {
     width: 100%;
     max-width: 1100px;
@@ -256,8 +254,8 @@ canvas {
 
 .gallery-item {
     background: transparent;
-    overflow: visible;     /* allow image to show full shape outside the box */
-    border-radius: 0;      /* remove rounded box clipping */
+    overflow: visible;
+    border-radius: 0;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -265,49 +263,47 @@ canvas {
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Cacher les légendes sous les vignettes (accessibilité préservée) */
+
 .gallery-item figcaption {
     display: none;
 }
 
-/* SVG as image container: use 'auto' height so image is not cropped.
-   Change --img-max-height per vignette to adjust size without moving position. */
+
 .gallery-item svg {
 	width: 100%;
 	height: auto;
-	max-height: var(--img-max-height, 320px);    /* ← now uses per-item CSS variable */
+	max-height: var(--img-max-height, 320px);
 	display: block;
 }
 
-/* target the SVG image element: only painted pixels will receive pointer events in SVG */
+
 .gallery-item svg image {
 	pointer-events: visiblePainted;
-	transition: transform 0.35s ease; /* removed filter from transition */
+	transition: transform 0.35s ease;
 	transform-origin: center center;
 	display: block;
 }
 
-/* hover only scales the image now — shadow removed */
+
 .gallery-item svg image:hover,
 .gallery-item svg a:hover image {
 	transform: scale(1.06);
 	cursor: pointer;
 }
 
-/* ensure the SVG internal anchor shows pointer when hovering painted pixels */
+
 .gallery-item svg a {
     cursor: pointer;
 }
 
-/* remove rectangular lift/box-shadow on the container to avoid square hover visuals */
+
 .gallery-item {
     transform: none;
     box-shadow: none;
     background: transparent;
 }
 
-/* remove any .gallery-link rules (no external <a> wrapping) */
-/* responsive tweaks (keep existing breakpoints) */
+
 @media (max-width: 900px) {
     .gallery {
         grid-template-columns: repeat(2, 1fr);
@@ -322,7 +318,7 @@ canvas {
     }
 }
 
-/* Project overlay (dynamic page) */
+
 .project-overlay {
     position: fixed;
     inset: 0;
@@ -351,7 +347,7 @@ canvas {
     border-bottom: 1px solid #eee;
 }
 
-/* Page projet — conteneur central, laisse de l'espace sous le header fixe */
+
 .project-page-main {
     padding-top: var(--header-offset);
     max-width: 1100px;
@@ -361,7 +357,7 @@ canvas {
     padding-bottom: 4rem;
 }
 
-/* Titre de projet : éviter qu'il soit masqué par le header lors du scroll */
+
 .project-page-title {
     scroll-margin-top: calc(var(--header-offset) + 16px);
     margin: 0 0 1rem 0;
@@ -369,7 +365,7 @@ canvas {
     color: #222;
 }
 
-/* Bouton de retour */
+
 .back-link {
     display: inline-block;
     margin-bottom: 1rem;
@@ -403,7 +399,7 @@ canvas {
     text-align: center;
 }
 
-/* Position et animation du PNG cliquable sur la page d'accueil */
+
 .hero-side-project {
     position: absolute;
     right: 4rem;
@@ -439,7 +435,7 @@ canvas {
     cursor: pointer;
 }
 
-/* Responsive: 2 columns on narrow screens -> stack */
+
 @media (max-width: 900px) {
     .gallery {
         grid-template-columns: repeat(2, 1fr);
